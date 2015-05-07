@@ -20,7 +20,8 @@ environment:
     - nodejs_version: 2
 
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: if($env:nodejs_version -eq "0.8") {Install-Product node $env:nodejs_version}
+  - ps: if($env:nodejs_version -ne "0.8") {Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)}
   - npm install
 
 build: off
@@ -28,13 +29,7 @@ build: off
 test_script:
   # Output useful info for debugging.
   - node --version && npm --version
-  # We test multiple Windows shells because of prior stdout buffering issues
-  # filed against Grunt. https://github.com/joyent/node/issues/3584
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
-
-matrix:
-  fast_finish: true
+  - npm test
 
 cache:
   - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
