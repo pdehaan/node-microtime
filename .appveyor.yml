@@ -12,7 +12,6 @@ init:
 
 # What combinations to test
 environment:
-  MSVS_VERSION: 2013
   matrix:
     - nodejs_version: 0.8
     - nodejs_version: 0.10
@@ -22,7 +21,8 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install --msvs_version=%MSVS_VERSION%
+  - IF %nodejs_version% LSS 2 npm install
+  - IF %nodejs_version% GEQ 2 npm install --msvs_version=2013
 
 build: off
 
