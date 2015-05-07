@@ -20,17 +20,17 @@ environment:
     - nodejs_version: 2
 
 install:
-  - ps: if($env:nodejs_version -eq "0.8") {Install-Product node $env:nodejs_version}
-  - ps: if($env:nodejs_version -ne "0.8") {Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)}
+  - ps: Install-Product node $env:nodejs_version
   - npm install
-  - npm rebuild
 
 build: off
 
 test_script:
   # Output useful info for debugging.
   - node --version && npm --version
-  - npm test
+  - IF %nodejs_version% < 1 npm test
+  # Work around https://github.com/iojs/io.js/issues/751
+  - IF %nodejs_version% >= 1 iojs test.js
 
 cache:
   - C:\Users\appveyor\AppData\Roaming\npm\node_modules -> package.json  # global npm modules
