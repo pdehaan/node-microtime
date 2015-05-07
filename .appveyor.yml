@@ -12,6 +12,7 @@ init:
 
 # What combinations to test
 environment:
+  MSVS_VERSION: 2013
   matrix:
     # - nodejs_version: 0.8
     # - nodejs_version: 0.10
