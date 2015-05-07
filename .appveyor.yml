@@ -21,7 +21,7 @@ environment:
 
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install
+  - npm install --msvs_version=%MSVS_VERSION%
 
 build: off
 
